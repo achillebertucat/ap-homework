@@ -3,6 +3,13 @@
 
 from random import randint
 import pygame as pg
+import argparse
+#parser = argparse.ArgumentParser()
+#parser.add_argument("taillejeu", help="indiquer la taille du tableau de jeu")
+#parser.add_argument("taillecase", help="indiquer la taille des cases du jeu")
+#args = parser.parse_args()
+#taille = args.taillejeu
+#cases = args.taillecase
 
 pg.init()
 screen = pg.display.set_mode((600, 600))
@@ -95,3 +102,10 @@ while running:
 # Enfin on rajoute un appel à pg.quit()
 # Cet appel va permettre à Pygame de "bien s'éteindre" et éviter des bugs sous Windows
 pg.quit()
+
+#notes
+
+#VITESSE DE REACTION si on acceler le jeu le temps de reponse
+#rend le jeu injouable
+#en revanche si on repasse à 1 image/seconde on ne peut pas fermer instantanement 
+#il faudrait desynchronise le jeu et les touches quit
