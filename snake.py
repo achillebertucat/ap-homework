@@ -1,18 +1,27 @@
-# v1 : pareil mais au moins on peut sortir du programme
-# avec la touche 'q', ou avec la souris en fermant la fenêtre
+#version finale avec argparse mais ici on ne peut mettre que l'argument de la taille
 
 from random import randint
 import pygame as pg
 import argparse
-#parser = argparse.ArgumentParser()
-#parser.add_argument("taillejeu", help="indiquer la taille du tableau de jeu")
+
+parser = argparse.ArgumentParser()
+parser.add_argument("taillejeu", help="indiquer la taille du tableau de jeu")
 #parser.add_argument("taillecase", help="indiquer la taille des cases du jeu")
-#args = parser.parse_args()
-#taille = args.taillejeu
+args = parser.parse_args()
+taille = args.taillejeu
 #cases = args.taillecase
 
+print(taille)
+print(type(taille))
+
+taille= int(taille)
+print(taille)
+print(type(taille))
+
+cases = 20
+carre= taille*cases
 pg.init()
-screen = pg.display.set_mode((600, 600))
+screen = pg.display.set_mode((carre, carre))
 clock = pg.time.Clock()
 
 
@@ -20,15 +29,15 @@ clock = pg.time.Clock()
 # on rajoute une condition à la boucle: si on la passe à False le programme s'arrête
 running = True
 direction = (1, 0)
-snake = [(10, 15), (11, 15), (12, 15)]
-fruit = (randint(0,29), randint(0, 29))
+snake = [((taille//2)-1 , taille//2), (taille//2, taille//2), ((taille//2)+1, taille//2)]
+fruit = (randint(0,taille - 1), randint(0, taille - 1))
 score = 0
 while running:
 
     clock.tick(2)
-    for i in range(30):
-        for j in range(30):
-            rect= pg.Rect(i*20, j*20, 20, 20)
+    for i in range(taille):
+        for j in range(taille):
+            rect= pg.Rect(i*cases, j*cases, cases, cases)
             pg.draw.rect(screen, (255*((i+j)%2),255*((i+j)%2),255*((i+j)%2)), rect)
     
     
@@ -37,39 +46,39 @@ while running:
 
     for l in range(longueur):
         (i, j)= snake[l]
-        rect= pg.Rect(i*20, j*20, 20, 20)
+        rect= pg.Rect(i*cases, j*cases, cases, cases)
         pg.draw.rect(screen, (255, 0, 0), rect)
 
-    #creation du fruit
-   
     
     if snake[-1] == fruit:
         tete = snake[-1]
         nouveau = (tete[0] + direction[0], tete[1] + direction[1])
         snake.append(nouveau)
-        fruit = (randint(0, 29), randint(0, 29))
+        fruit = (randint(0, taille - 1), randint(0, taille - 1))
         score +=1
     else: 
         tete = snake[-1]
         snake = snake[1:]
         nouveau = (tete[0] + direction[0], tete[1] + direction[1])
         snake.append(nouveau)
-        
-    rectfruit = pg.Rect(fruit[0]*20, fruit[1]*20, 20, 20)
+
+    #dessin du fruit   
+    rectfruit = pg.Rect(fruit[0]*cases, fruit[1]*cases, cases, cases)
     pg.draw.rect(screen, (0, 255, 255), rectfruit)
 
 
-    #message fin du jeu
-    erreur = pg.Rect(0, 0, 600, 600)
+    #message fin du jeu avec un ecran rouge
+    erreur = pg.Rect(0, 0, carre, carre)
 
+    #tests d'erreurs de fin de jeu
     tete = snake[-1]
     if tete in snake[:-2]:
         pg.draw.rect(screen, (255, 0, 0), erreur)
-        snake = [(30, 30)]
+        snake = [(taille, taille)]
         direction = (0, 0)
-    elif (tete[0] in (-1, 30)) or (tete[0] in (-1, 30)):
+    elif (tete[0] in (-1, taille)) or (tete[1] in (-1, taille)):
         pg.draw.rect(screen, (255, 0, 0), erreur)
-        snake = [(30, 30)]
+        snake = [(taille, taille)]
         direction = (0, 0)
     pg.display.update()
     pg.display.set_caption(f"Score: {score}")
