@@ -5,7 +5,7 @@ import pygame as pg
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("taillejeu", help="indiquer la taille du tableau de jeu")
+parser.add_argument("taillejeu", default=30, help="indiquer la taille du tableau de jeu")
 #parser.add_argument("taillecase", help="indiquer la taille des cases du jeu")
 args = parser.parse_args()
 taille = args.taillejeu
